@@ -114,8 +114,8 @@ def main():
     y_test_pre = model(x_data_val)
     plt.scatter(y_data_val, y_test_pre.data.numpy())
     plt.plot([y_data_val.min(), y_data_val.max()], [y_data_val.min(), y_data_val.max()], "k--")
-    plt.xlabel(r"$v^{tz}_{DFT}$", font)
-    plt.ylabel(r"$v^{tz}_{Pred}$", font)
+    plt.xlabel(r"$v^{}$".format(vth) + "(DFT)", font)
+    plt.ylabel(r"$v^{}$".format(vth) + "(Pred)", font)
     
     #plt.figure(1, figsize=(6,6))
     plt.subplot(122)
@@ -123,7 +123,7 @@ def main():
     plt.plot(step_x, val_loss, "o-",)
     plt.xlabel("epoch", font)
     plt.ylabel("loss", font)
-    plt.savefig("./training_results/Figure/v{}_3000_epoch.png".format(vth), dpi=500)
+    plt.savefig("./training_results/Lr_{}_step_{}/v{}_3000_epoch.png".format(learning_rate, step_s, vth), dpi=500)
     plt.show()
     
 
