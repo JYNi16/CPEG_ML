@@ -28,7 +28,7 @@ scheduler = StepLR(optimizer, step_size= step_s, gamma = gam)
 
 def generate_data(): 
     
-    x_data, y_data, x_data_val, y_data_val  = data_Emb.pre_for_svdata_xyz(1)
+    x_data, y_data, x_data_val, y_data_val  = data_Emb.pre_for_svdata_xyz(2)
     
     print("the training dataset size is:", x_data.shape)
     
@@ -114,8 +114,8 @@ def main():
     y_test_pre = model(x_data_val)
     plt.scatter(y_data_val, y_test_pre.data.numpy())
     plt.plot([y_data_val.min(), y_data_val.max()], [y_data_val.min(), y_data_val.max()], "k--")
-    plt.xlabel(r"$v^{tx}_DFT$", font)
-    plt.ylabel(r"$v^{tx}_Pred$", font)
+    plt.xlabel(r"$v^{tx}_{DFT}$", font)
+    plt.ylabel(r"$v^{tx}_{Pred}$", font)
     
     #plt.figure(1, figsize=(6,6))
     plt.subplot(122)
