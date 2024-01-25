@@ -7,7 +7,7 @@ Created on Mon Sep 25 17:27:32 2023
 import numpy as np
 import os, glob
 import matplotlib.pyplot as plt
-import random
+from config import *
 
 def embeding(pre, x):
     
@@ -45,7 +45,7 @@ def pre_for_svdata_xyz(vth):
     return: training and validation datasets
     """
      
-    p0 = "..//data_3//s_v_data"
+    p0 = ".//datasets//s_v_data"
     path = ["_x.txt", "_y.txt", "_z.txt", "_xy.txt", "_xz.txt", "_yz.txt", "_xyz.txt"]
     
     train_data = [] 
@@ -64,25 +64,43 @@ def pre_for_svdata_xyz(vth):
         
         for i in range(nums):
             embed_x = embeding(pre, data_x[i])
-            print("now embed_x is:", embed_x, data_y[i])
-            embed_data = embed_x
-            print("embed_data is:", embed_data)
+           #print("now embed_x is:", embed_x, data_y[i])
+            embed_data = [embed_x[0], embed_x[1], embed_x[-1], data_y[i]]
+           #print("embed_data is:", embed_data)
             train_data.append(embed_data)
             #print("now train_data is:", train_data)
+    train_data = np.array(train_data)
+    np.random.shuffle(train_data)
+        
+    print("the nums of train_data is:", train_data.shape)
     
-    train_data = np.random.shuffle(np.array(train_data))
-        
-    print("train_data is:", train_data)
-        
-        #for j in range(data_tmp.shape[0]):
-        #    data = data_tmp[j,:]
-        #    path_name = p.split(".")[0]
-        #    if (j // 5 == 0):
-        #        np.save("datasets//data_3//s_data//validation//{}_{:d}.npy".format(path_name,j), data)
-        #    else:
-        #        np.save("datasets//data_3//s_data//train//{}_{:d}.npy".format(path_name,j), data)
+    x_data, y_data = [], [] 
+    x_data_val, y_data_val = [], []
+    
+    train_nums = int(train_r*len(train_data))
+    
+    for i in range(len(train_data)):
+        if i <= train_nums:
+            x_data.append([train_data[i][s] for s in range(0,3)])
+            #print("nth x data is:", x_data)
+            y_data.append(train_data[i][-1])
+        else:
+            x_data_val.append([train_data[i][s] for s in range(0,3)])
+            y_data_val.append(train_data[i][-1])
+    
+    
+    x_data = np.array(x_data).reshape(-1,3)
+    y_data = np.array(y_data).reshape(-1,1)
+    x_data_val = np.array(x_data_val).reshape(-1,3)
+    y_data_val = np.array(y_data_val).reshape(-1,1)
+    
+    print(x_data_val)
+    print(y_data_val)
+    
+    return x_data, y_data, x_data_val, y_data_val 
+   
 
 if __name__=="__main__":
-    pre_for_svdata_xyz(1)
+    x_data, y_data, x_data_val, y_data_val  = pre_for_svdata_xyz(1)
             
             
