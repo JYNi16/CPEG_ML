@@ -21,7 +21,7 @@ def pre_for_svdata(vth):
     return: training and validation datasets
     """
     
-    path = "..//data_3//s_v_data//strain_z.txt"
+    path = ".//datasets//s_v_data//strain_z.txt"
     data = [] 
     with open(path, "r") as f:
         a = f.readlines() 
