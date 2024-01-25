@@ -9,6 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt 
 import random 
 import data_no_embed as data_NE
+import data_embed as data_Emb
 import torch 
 from torch.nn import functional as F
 from torch import nn
@@ -19,7 +20,7 @@ from model import Fit_net
 
     
 #model setting 
-model = Fit_net(100, 200, 100, 1)
+model = Fit_net(200, 400, 200, 1)
 model.to(device)
 
 optimizer = torch.optim.SGD(model.parameters(), lr = learning_rate)
@@ -27,7 +28,7 @@ scheduler = StepLR(optimizer, step_size= step_s, gamma = gam)
 
 def generate_data(): 
     
-    x_data, y_data, x_data_val, y_data_val  = data_NE.pre_for_svdata(2)
+    x_data, y_data, x_data_val, y_data_val  = data_Emb.pre_for_svdata_xyz(1)
     
     print("the training dataset size is:", x_data.shape)
     
@@ -74,6 +75,7 @@ def train_(model, data,  train=True):
         plt.scatter(y.data.numpy(), y_pre.data.numpy())
         plt.plot([y.data.numpy().min(), y.data.numpy().max()], [y.data.numpy().min(), y.data.numpy().max()], "k--")
         plt.pause(0.001)
+
     return loss 
 
 def main():
@@ -106,19 +108,21 @@ def main():
     #plt.ioff()
     
     #test process
-    #print("training process finsihed, now test start !!!")
-    #plt.figure(1, figsize=(16,7))
-    #plt.subplot(121)
-    #y_test_pre = model(x_data_test)
-    #plt.scatter(y_data_test, y_test_pre.data.numpy())
-    #plt.plot([y_data_test.min(), y_data_test.max()], [y_data_test.min(), y_data_test.max()], "k--")
+    print("training process finsihed, now test start !!!")
+    plt.figure(1, figsize=(16,7))
+    plt.subplot(121)
+    y_test_pre = model(x_data_val)
+    plt.scatter(y_data_val, y_test_pre.data.numpy())
+    plt.plot([y_data_val.min(), y_data_val.max()], [y_data_val.min(), y_data_val.max()], "k--")
+    plt.xlabel(r"$v^{tx}_DFT$", font)
+    plt.ylabel(r"$v^{tx}_Pred$", font)
     
-    plt.figure(1, figsize=(6,6))
-    #plt.subplot(122)
+    #plt.figure(1, figsize=(6,6))
+    plt.subplot(122)
     plt.plot(step_x, train_loss, "o-",)
     plt.plot(step_x, val_loss, "o-",)
-    plt.xlabel("epoch")
-    plt.ylabel("loss")
+    plt.xlabel("epoch", font)
+    plt.ylabel("loss", font)
     plt.show()
     
 

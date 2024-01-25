@@ -12,7 +12,10 @@ val_r = 0.25  #the ratio of the validation sets
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu") 
 loss_function = nn.MSELoss()
-epoch = 1000 
+epoch = 3000 
 learning_rate = 0.01
 gam = 0.98 
-step_s = 10
+step_s = 50
+
+#font setting
+font = {'family': "Times New Roman", "weight":"normal", "size":20,}
