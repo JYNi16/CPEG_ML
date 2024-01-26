@@ -94,8 +94,8 @@ def pre_for_svdata_xyz(vth):
     x_data_val = np.array(x_data_val).reshape(-1,3)
     y_data_val = np.array(y_data_val).reshape(-1,1)
     
-    print(x_data_val)
-    print(y_data_val)
+    print(x_data_val.shape)
+    print(y_data_val.shape)
     
     return x_data, y_data, x_data_val, y_data_val 
    

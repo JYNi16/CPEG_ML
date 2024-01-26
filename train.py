@@ -4,7 +4,7 @@ Created on Wed Sep 27 10:32:56 2023
 
 @author: Curry
 """
-
+import os
 import numpy as np
 import matplotlib.pyplot as plt 
 import random 
@@ -19,12 +19,23 @@ from config import *
 from model import Fit_net
 
     
-#model setting 
+#model setting
+
+print("device is:", device)
 model = Fit_net(200, 400, 200, 1)
 model.to(device)
 
 optimizer = torch.optim.SGD(model.parameters(), lr = learning_rate)
-scheduler = StepLR(optimizer, step_size= step_s, gamma = gam) 
+scheduler = StepLR(optimizer, step_size= step_s, gamma = gam)
+
+def save_results():
+    if os.path.exists(save_path):
+        print("save path {} exist".format(save_path))
+    else:
+        print("save path {} not exist".format(save_path))
+        os.makedirs(save_path)
+        print("now makefir the save_path")
+    
 
 def generate_data(): 
     
@@ -54,13 +65,13 @@ def train_(model, data,  train=True):
         torch.set_grad_enabled(True)
         model.train()
         optimizer.zero_grad()
-        y_pre = model(x)
+        y_pre = model(x.to(device, torch.float32))
     else:
         torch.set_grad_enabled(False)
         model.eval()
-        y_pre = model(x)
+        y_pre = model(x.to(device, torch.float32))
     #print("y_pre.shape is:", y_pre.shape)
-    loss = loss_function(y_pre, y)
+    loss = loss_function(y_pre, y.to(device, torch.float32))
     
     #procedure for training
     if train:
@@ -71,10 +82,10 @@ def train_(model, data,  train=True):
         #plt.pause(0.001)    
     
     #procedure for validation
-    else:
-        plt.scatter(y.data.numpy(), y_pre.data.numpy())
-        plt.plot([y.data.numpy().min(), y.data.numpy().max()], [y.data.numpy().min(), y.data.numpy().max()], "k--")
-        plt.pause(0.001)
+    #else:
+    #    plt.scatter(y.data.numpy(), y_pre.data.numpy())
+    #    plt.plot([y.data.numpy().min(), y.data.numpy().max()], [y.data.numpy().min(), y.data.numpy().max()], "k--")
+    #    plt.pause(0.001)
 
     return loss 
 
@@ -111,8 +122,8 @@ def main():
     print("training process finsihed, now test start !!!")
     plt.figure(1, figsize=(16,7))
     plt.subplot(121)
-    y_test_pre = model(x_data_val)
-    plt.scatter(y_data_val, y_test_pre.data.numpy())
+    y_test_pre = model(x_data_val.to(device, torch.float32))
+    plt.scatter(y_data_val, y_test_pre.data.cpu().numpy())
     plt.plot([y_data_val.min(), y_data_val.max()], [y_data_val.min(), y_data_val.max()], "k--")
     plt.xlabel(r"$v^{}$".format(vth) + "(DFT)", font)
     plt.ylabel(r"$v^{}$".format(vth) + "(Pred)", font)
@@ -123,10 +134,10 @@ def main():
     plt.plot(step_x, val_loss, "o-",)
     plt.xlabel("epoch", font)
     plt.ylabel("loss", font)
-    plt.savefig("./training_results/Lr_{}_step_{}/v{}_3000_epoch.png".format(learning_rate, step_s, vth), dpi=500)
-    plt.show()
+    save_results()
+    plt.savefig(save_path + "/v{}_4000_epoch.png".format(vth), dpi=500)
+    #plt.show()
     
 
 if __name__=="__main__":
     main()
-        
