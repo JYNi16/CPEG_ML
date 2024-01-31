@@ -22,7 +22,7 @@ from model import Fit_net
 #model setting
 
 print("device is:", device)
-model = Fit_net(200, 400, 200, 1)
+model = Fit_net(N1, N2, N1, layers)
 model.to(device)
 
 optimizer = torch.optim.SGD(model.parameters(), lr = learning_rate)
@@ -35,7 +35,34 @@ def save_results():
         print("save path {} not exist".format(save_path))
         os.makedirs(save_path)
         print("now makefir the save_path")
+
+def inference_results(model): 
+    input_x, input_y, input_z = np.arange(-2, 2, 0.1,), np.arange(-2, 2, 0.1), np.arange(-2, 2, 0.1)
+    #print("input_x is:", input_x) 
+    X, Y, Z = np.meshgrid(input_x, input_y, input_z)
+    xx, yy, zz = X.flatten(), Y.flatten(), Z.flatten() 
+
+    nums = len(xx)
+
+    print("the number of datasets is:", nums)
+
+    #write the inference results into files
+    with open(save_path + "/infer_v{}_4000_epoch.dat".format(vth), "w") as f1:
+        print("Inference results by NN model", file = f1)
+        print("1st is strain parameter along x, 2nd is y, 3rd is z and last term is vth", file = f1)
+        print("strin_x"+ "    " + "strain_y" + "    " + "strain_z" + "    " + "vth", file = f1)
+        for i in range(nums):            
+            input = np.array([xx[i], yy[i], zz[i]]).reshape(-1, 3)
+            print("input is:", input*0.01)
+            input = torch.tensor(input, dtype = torch.float32)
+            out = model(input.to(device, torch.float32))
+            print("infer result is:", out.data.cpu().numpy()[0])
+
+            y_pred = out.data.cpu().numpy()[0][0]
+
+            print(str(round(xx[i]*0.01, 6))+"   "+str(round(yy[i]*0.01, 6))+"   "+str(round(zz[i]*0.01,6))+"  "+str(y_pred), file=f1)
     
+    f1.close()
 
 def generate_data(): 
     
@@ -116,10 +143,17 @@ def main():
         scheduler.step()
     
     print("The training process finished !!!")
-    #plt.ioff()
-    
+
+    #inferrence start !!! 
+    print("inference process start !!!")
+
+    inference_results(model)
+
+
+    print("now test start !!!")
     #test process
-    print("training process finsihed, now test start !!!")
+    
+
     plt.figure(1, figsize=(16,7))
     plt.subplot(121)
     y_test_pre = model(x_data_val.to(device, torch.float32))
