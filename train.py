@@ -49,8 +49,8 @@ def inference_results(model):
     #write the inference results into files
     with open(save_path + "/infer_v{}_4000_epoch.dat".format(vth), "w") as f1:
         print("Inference results by NN model", file = f1)
-        print("1st is strain parameter along x, 2nd is y, 3rd is z and last term is vth", file = f1)
-        print("strin_x"+ "    " + "strain_y" + "    " + "strain_z" + "    " + "vth", file = f1)
+        print("1st is strain parameter along x, 2nd is y, 3rd is z and last term is v{}".format(vth), file = f1)
+        print("strin_x"+ "    " + "strain_y" + "    " + "strain_z" + "    " + "v{}".format(vth), file = f1)
         for i in range(nums):            
             input = np.array([xx[i], yy[i], zz[i]]).reshape(-1, 3)
             print("input is:", input*0.01)

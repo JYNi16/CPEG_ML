@@ -1,6 +1,6 @@
 Inference results by NN model
-1st is strain parameter along x, 2nd is y, 3rd is z and last term is vth
-strin_x    strain_y    strain_z    vth
+1st is strain parameter along x, 2nd is y, 3rd is z and last term is v5
+strin_x    strain_y    strain_z    v5
 -0.02   -0.02   -0.02  0.7673729
 -0.02   -0.02   -0.019  0.76967347
 -0.02   -0.02   -0.018  0.7719935
