@@ -8,5 +8,6 @@ Before trying this project, you should install follwing library
 
 You can modify the training details/saveing path in config.py 
 
-#You can start to train model by following
+#You can start to train model by following command
+
 python train.py ...
