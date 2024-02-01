@@ -36,18 +36,23 @@ def save_results():
         os.makedirs(save_path)
         print("now makefir the save_path")
 
-def inference_results(model): 
-    input_x, input_y, input_z = np.arange(-2, 2, 0.1,), np.arange(-2, 2, 0.1), np.arange(-2, 2, 0.1)
+def inference_results(): 
+    r_s = 0 #range start 
+    r_f = 5 #range final 
+    input_x, input_y, input_z = np.arange(r_s, r_f, 0.1,), np.arange(r_s, r_f, 0.1), np.arange(r_s, r_f, 0.1)
     #print("input_x is:", input_x) 
     X, Y, Z = np.meshgrid(input_x, input_y, input_z)
     xx, yy, zz = X.flatten(), Y.flatten(), Z.flatten() 
+    model_infer = Fit_net(N1, N2, N1, layers)
+    model_infer.load_state_dict(torch.load(save_path + "/model_v{}.pth".format(vth)))
+    model_infer.to(device)
 
     nums = len(xx)
 
     print("the number of datasets is:", nums)
 
     #write the inference results into files
-    with open(save_path + "/infer_v{}_4000_epoch.dat".format(vth), "w") as f1:
+    with open(save_path + "/infer_v{}_{}_epoch_{}_{}.dat".format(vth, epoch, r_s*0.01, r_f*0.01), "w") as f1:
         print("Inference results by NN model", file = f1)
         print("1st is strain parameter along x, 2nd is y, 3rd is z and last term is v{}".format(vth), file = f1)
         print("strin_x"+ "    " + "strain_y" + "    " + "strain_z" + "    " + "v{}".format(vth), file = f1)
@@ -55,7 +60,7 @@ def inference_results(model):
             input = np.array([xx[i], yy[i], zz[i]]).reshape(-1, 3)
             print("input is:", input*0.01)
             input = torch.tensor(input, dtype = torch.float32)
-            out = model(input.to(device, torch.float32))
+            out = model_infer(input.to(device, torch.float32))
             print("infer result is:", out.data.cpu().numpy()[0])
 
             y_pred = out.data.cpu().numpy()[0][0]
@@ -142,18 +147,11 @@ def main():
         
         scheduler.step()
     
-    print("The training process finished !!!")
-
-    #inferrence start !!! 
-    print("inference process start !!!")
-
-    inference_results(model)
-
+    print("The training process finished !!!")   
 
     print("now test start !!!")
     #test process
     
-
     plt.figure(1, figsize=(16,7))
     plt.subplot(121)
     y_test_pre = model(x_data_val.to(device, torch.float32))
@@ -169,9 +167,18 @@ def main():
     plt.xlabel("epoch", font)
     plt.ylabel("loss", font)
     save_results()
-    plt.savefig(save_path + "/v{}_4000_epoch.png".format(vth), dpi=500)
+    plt.savefig(save_path + "/v{}_{}_epoch.png".format(vth, epoch), dpi=500)
     #plt.show()
     
+    #save model 
+    torch.save(model.state_dict(), save_path + "/model_v{}.pth".format(vth))
+
+    #inferrence start !!! 
+    print("inference process start !!!")
+
+    #start inference result 
+    inference_results()
+
 
 if __name__=="__main__":
     main()
