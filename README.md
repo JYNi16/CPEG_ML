@@ -6,7 +6,7 @@ Before trying this project, you should install following library
 1. Pytorch cpu or cuda version are both fine.
 2. Numpy; matplotlib
 
-You can modify the training details/saveing path in config.py 
+You can modify the training details/saving path in config.py 
 
 #You can start to train model by following command
 
