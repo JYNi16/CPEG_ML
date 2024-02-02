@@ -1,7 +1,7 @@
 # CPEG_ML
 Based on the artifical Neural Network to fit the optical parameters
 
-Before trying this project, you should install follwing library
+Before trying this project, you should install following library
 
 1. Pytorch cpu or cuda version are both fine.
 2. Numpy; matplotlib
