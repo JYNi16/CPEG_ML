@@ -37,14 +37,18 @@ def save_results():
         print("now makefir the save_path")
 
 def inference_results(): 
-    r_s = 0 #range start 
-    r_f = 5 #range final 
-    input_x, input_y, input_z = np.arange(r_s, r_f, 0.1,), np.arange(r_s, r_f, 0.1), np.arange(r_s, r_f, 0.1)
+    print("test now")
+    r_s = -10 #range start 
+    r_f = 10 #range final 
+    d = 0.4
+    input_x, input_y, input_z = np.arange(r_s, r_f, d), np.arange(r_s, r_f, d), np.arange(r_s, r_f, d)
     #print("input_x is:", input_x) 
     X, Y, Z = np.meshgrid(input_x, input_y, input_z)
     xx, yy, zz = X.flatten(), Y.flatten(), Z.flatten() 
     model_infer = Fit_net(N1, N2, N1, layers)
-    model_infer.load_state_dict(torch.load(save_path + "/model_v{}.pth".format(vth)))
+    print("load model is ok!")
+    model_infer.load_state_dict(torch.load(save_path + "/model_v{}.pth".format(vth), map_location=device))
+    print("load infer model is ok!")
     model_infer.to(device)
 
     nums = len(xx)
@@ -52,7 +56,7 @@ def inference_results():
     print("the number of datasets is:", nums)
 
     #write the inference results into files
-    with open(save_path + "/infer_v{}_{}_epoch_{}_{}.dat".format(vth, epoch, r_s*0.01, r_f*0.01), "w") as f1:
+    with open(save_path + "/infer_v{}_{}_epoch_{}_{}_{}.dat".format(vth, epoch, r_s*0.01, r_f*0.01, int((r_f-r_s)/d)), "w") as f1:
         print("Inference results by NN model", file = f1)
         print("1st is strain parameter along x, 2nd is y, 3rd is z and last term is v{}".format(vth), file = f1)
         print("strin_x"+ "    " + "strain_y" + "    " + "strain_z" + "    " + "v{}".format(vth), file = f1)
@@ -169,6 +173,7 @@ def main():
     save_results()
     plt.savefig(save_path + "/v{}_{}_epoch.png".format(vth, epoch), dpi=500)
     #plt.show()
+
     
     #save model 
     torch.save(model.state_dict(), save_path + "/model_v{}.pth".format(vth))
@@ -177,8 +182,8 @@ def main():
     print("inference process start !!!")
 
     #start inference result 
-    inference_results()
+    #inference_results()
 
 
 if __name__=="__main__":
-    main()
+    inference_results()
