@@ -10,15 +10,15 @@ from torch import nn
 train_r = 0.75 #the ratio of the training sets
 val_r = 0.25  #the ratio of the validation sets
 
-vth = 6 #nth of the v-data that we want to fit by ML v~1,2,3,4,5,6 
+vth = 1 #nth of the v-data that we want to fit by ML v~1,2,3,4,5,6
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu") 
 #device = torch.device("cuda:0")
 loss_function = nn.MSELoss()
-epoch = 5000 
+epoch = 6000 
 learning_rate = 0.005
 gam = 0.98 
-step_s = 50
+step_s = 100
 
 #model FNN settings
 N1 = 300

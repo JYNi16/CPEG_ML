@@ -36,43 +36,6 @@ def save_results():
         os.makedirs(save_path)
         print("now makefir the save_path")
 
-def inference_results(): 
-    print("test now")
-    r_s = -10 #range start 
-    r_f = 10 #range final 
-    d = 0.4
-    input_x, input_y, input_z = np.arange(r_s, r_f, d), np.arange(r_s, r_f, d), np.arange(r_s, r_f, d)
-    #print("input_x is:", input_x) 
-    X, Y, Z = np.meshgrid(input_x, input_y, input_z)
-    xx, yy, zz = X.flatten(), Y.flatten(), Z.flatten() 
-    model_infer = Fit_net(N1, N2, N1, layers)
-    print("load model is ok!")
-    model_infer.load_state_dict(torch.load(save_path + "/model_v{}.pth".format(vth), map_location=device))
-    print("load infer model is ok!")
-    model_infer.to(device)
-
-    nums = len(xx)
-
-    print("the number of datasets is:", nums)
-
-    #write the inference results into files
-    with open(save_path + "/infer_v{}_{}_epoch_{}_{}_{}.dat".format(vth, epoch, r_s*0.01, r_f*0.01, int((r_f-r_s)/d)), "w") as f1:
-        print("Inference results by NN model", file = f1)
-        print("1st is strain parameter along x, 2nd is y, 3rd is z and last term is v{}".format(vth), file = f1)
-        print("strin_x"+ "    " + "strain_y" + "    " + "strain_z" + "    " + "v{}".format(vth), file = f1)
-        for i in range(nums):            
-            input = np.array([xx[i], yy[i], zz[i]]).reshape(-1, 3)
-            print("input is:", input*0.01)
-            input = torch.tensor(input, dtype = torch.float32)
-            out = model_infer(input.to(device, torch.float32))
-            print("infer result is:", out.data.cpu().numpy()[0])
-
-            y_pred = out.data.cpu().numpy()[0][0]
-
-            print(str(round(xx[i]*0.01, 6))+"   "+str(round(yy[i]*0.01, 6))+"   "+str(round(zz[i]*0.01,6))+"  "+str(y_pred), file=f1)
-    
-    f1.close()
-
 def generate_data(): 
     
     x_data, y_data, x_data_val, y_data_val  = data_Emb.pre_for_svdata_xyz(vth)
@@ -118,10 +81,10 @@ def train_(model, data,  train=True):
         #plt.pause(0.001)    
     
     #procedure for validation
-    #else:
-    #    plt.scatter(y.data.numpy(), y_pre.data.numpy())
-    #    plt.plot([y.data.numpy().min(), y.data.numpy().max()], [y.data.numpy().min(), y.data.numpy().max()], "k--")
-    #    plt.pause(0.001)
+    else:
+        plt.scatter(y.data.numpy(), y_pre.data.numpy())
+        plt.plot([y.data.numpy().min(), y.data.numpy().max()], [y.data.numpy().min(), y.data.numpy().max()], "k--")
+        plt.pause(0.001)
 
     return loss 
 
@@ -186,4 +149,4 @@ def main():
 
 
 if __name__=="__main__":
-    inference_results()
+    main()
