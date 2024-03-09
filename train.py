@@ -36,6 +36,7 @@ def save_results():
         os.makedirs(save_path)
         print("now makefir the save_path")
 
+
 def generate_data(): 
     
     x_data, y_data, x_data_val, y_data_val  = data_Emb.pre_for_svdata_xyz(vth)
@@ -81,10 +82,10 @@ def train_(model, data,  train=True):
         #plt.pause(0.001)    
     
     #procedure for validation
-    else:
-        plt.scatter(y.data.numpy(), y_pre.data.numpy())
-        plt.plot([y.data.numpy().min(), y.data.numpy().max()], [y.data.numpy().min(), y.data.numpy().max()], "k--")
-        plt.pause(0.001)
+    #else:
+    #    plt.scatter(y.data.numpy(), y_pre.data.numpy())
+    #    plt.plot([y.data.numpy().min(), y.data.numpy().max()], [y.data.numpy().min(), y.data.numpy().max()], "k--")
+    #    plt.pause(0.001)
 
     return loss 
 
@@ -139,7 +140,7 @@ def main():
 
     
     #save model 
-    torch.save(model.state_dict(), save_path + "/model_v{}.pth".format(vth))
+    torch.save(model.state_dict(), save_path + "/model_v{}_{}.pth".format(vth, epoch))
 
     #inferrence start !!! 
     print("inference process start !!!")
