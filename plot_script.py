@@ -2,6 +2,7 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 from config import * 
+from train import save_results
 
 def svdata_xyz_dft(s_idx):
     """
@@ -41,7 +42,7 @@ def svdata_xyz_ml(input_d):
     v = [[], [], [], [], [], []]
     x = [[], [], [], [], [], []]
     for k in range(1,7):
-        infer_text = save_path + "/infer_v{}_{}_epoch_-0.03_0.03_60_{idx}.dat".format(int(k), epoch, idx=strain_idx)
+        infer_text = save_infer_path + "/infer_v{}_{}_epoch_-0.03_0.03_60_{idx}.dat".format(int(k), epoch, idx=strain_idx)
         with open(infer_text, "r") as f:
             a = f.readlines()
             for i in range(3, len(a)):
@@ -56,7 +57,7 @@ def svdata_xyz_ml(input_d):
 
 def plot():
     
-    input_d = [1, 0, 1]
+    input_d = [1, 1, 0]
     input_l = ["x", "y", "z", "xy", "xz", "yz", "xyz"]
     font = {'family': "Times New Roman", "weight":"normal", "size":26,}
     font2 = {'family': "Times New Roman", "weight":"normal", "size":64,}
@@ -78,7 +79,9 @@ def plot():
     for i in range(6):
         plt.subplot(2,3,int(i+1))
         plt.scatter(strain_x_dft, y_dft[i], s=50, color = "seagreen", label = "DFT")
+        #plt.plot(strain_x_dft, y_dft[i], linewidth = 4,  color = "seagreen", label = "DFT")
         plt.scatter(strain_x_ml[i], y_ml[i],s=50, color = "red",  label = "Machine Learning")
+        #plt.plot(strain_x_ml[i], y_ml[i], linewidth = 4, color = "red",  label = "Machine Learning")
         
         plt.xticks(fontproperties='Times New Roman', fontsize = 18)
         plt.yticks(fontproperties='Times New Roman', fontsize = 18)
@@ -88,9 +91,10 @@ def plot():
     #title = "v with strain along {}".format(strain_idx)
     plt.legend(loc = "upper right",prop = {'family': "Times New Roman", "weight":"normal", "size":26,}, frameon=False)
     #plt.title(title,loc = "center",fontdict={"size":"xx-large","color":"black", "family":"Times New Roman"})
-    plt.suptitle("v with strain along {}".format(strain_idx), fontsize = 32, y =0.93)
+    plt.suptitle("v under strain along {}".format(strain_idx), fontsize = 32, y =0.93)
     
-    plt.savefig(save_path + "/v{}_{}_epoch_infer_{name}.png".format(vth, epoch, name=strain_idx), dpi=500)
+    save_results(save_infer_path) 
+    plt.savefig(save_infer_path + "/{}_epoch_infer_{name}.png".format(epoch, name=strain_idx), dpi=500)
     
     
 

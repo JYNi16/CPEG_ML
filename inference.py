@@ -2,11 +2,12 @@ import os
 import numpy as np
 from config import *
 from model import Fit_net
+from train import save_results
 
 def inference_results_mesh():
     print("test now")
-    r_s = -3 #range start
-    r_f = 3 #range final
+    r_s = -5 #range start
+    r_f = 5 #range final
     d = 0.1
     input_x, input_y, input_z = np.arange(r_s, r_f, d), np.arange(r_s, r_f, d), np.arange(r_s, r_f, d)
     #print("input_x is:", input_x)
@@ -14,16 +15,16 @@ def inference_results_mesh():
     xx, yy, zz = X.flatten(), Y.flatten(), Z.flatten()
     model_infer = Fit_net(N1, N2, N1, layers)
     print("load model is ok!")
-    model_infer.load_state_dict(torch.load(save_path + "/model_v{}.pth".format(vth), map_location=device))
+    model_infer.load_state_dict(torch.load(save_path + "/model_v{}_{}.pth".format(vth, epoch), map_location=device))
     print("load infer model is ok!")
     model_infer.to(device)
 
     nums = len(xx)
-
     print("the number of datasets is:", nums)
-
+    
+    save_results(save_infer_path)
     #write the inference results into files
-    with open(save_path + "/infer_v{}_{}_epoch_{}_{}_{}_test.dat".format(vth, epoch, r_s*0.01, r_f*0.01, int((r_f-r_s)/d)), "w") as f1:
+    with open(save_infer_path + "/infer_v{}_{}_epoch_{}_{}_{}_test.dat".format(vth, epoch, r_s*0.01, r_f*0.01, int((r_f-r_s)/d)), "w") as f1:
         print("Inference results by NN model", file = f1)
         print("1st is strain parameter along x, 2nd is y, 3rd is z and last term is v{}".format(vth), file = f1)
         print("strin_x"+ "    " + "strain_y" + "    " + "strain_z" + "    " + "v{}".format(vth), file = f1)
@@ -67,8 +68,9 @@ def inference_results_uniform(input_d):
 
     nums = len(input_x)
     print("the number of datasets is:", nums)
-
-    save_text_file = save_path + "/infer_v{0}_{1}_epoch_{2}_{3}_{4}_{s_idx}.dat".format(vth, epoch, round(r_s*0.01, 3), round((r_f-0.1)*0.01, 3), int((r_f-r_s)/d), s_idx=strain_idx)
+    save_results(save_infer_path) 
+    
+    save_text_file = save_infer_path + "/infer_v{0}_{1}_epoch_{2}_{3}_{4}_{s_idx}.dat".format(vth, epoch, round(r_s*0.01, 3), round((r_f-0.1)*0.01, 3), int((r_f-r_s)/d), s_idx=strain_idx)
     #write the inference results into files
     with open(save_text_file, "w") as f1:
         print("Inference results by NN model", file = f1)
@@ -95,4 +97,4 @@ def infer_main():
         inference_results_uniform(idx)
 
 if __name__ == "__main__":
-    infer_main()
+    inference_results_mesh()

@@ -28,7 +28,7 @@ model.to(device)
 optimizer = torch.optim.SGD(model.parameters(), lr = learning_rate)
 scheduler = StepLR(optimizer, step_size= step_s, gamma = gam)
 
-def save_results():
+def save_results(save_path):
     if os.path.exists(save_path):
         print("save path {} exist".format(save_path))
     else:
@@ -134,7 +134,7 @@ def main():
     plt.plot(step_x, val_loss, "o-",)
     plt.xlabel("epoch", font)
     plt.ylabel("loss", font)
-    save_results()
+    save_results(save_path)
     plt.savefig(save_path + "/v{}_{}_epoch.png".format(vth, epoch), dpi=500)
     #plt.show()
 
