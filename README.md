@@ -12,17 +12,14 @@ You can start to train model by following command: python train.py ...
 
 The function of each part is defined as follows: 
 
-config.py
+1. config.py
+   vth： the nth velocity with range of v1~v6
+   epoch： total step of training process  
+   N1/N2 mean that the nums of nerons in each layer and layesr is the nums of hidden layers
+   save_path is the training saving path, which include the training results, saving model 
+   save_infer_path include the inference results
+2. inference.py
 
-vth： the nth velocity with v1~v6
-
-epoch： total step of training process  
-
-N1/N2 mean that the nums of nerons in each layer and layesr is the nums of hidden layers  
-
-save_path is the training saving path, which include the training results, saving model 
-
-save_infer_path include the inference results
 
 
 
