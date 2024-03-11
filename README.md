@@ -34,7 +34,7 @@ The function of each py.files are defined as follows: \
    
    (2). inference_results_uniform().
    In this function, you can infer the vth by feeding the uniform inputs into the well training model. 
-   The process of this calculation function is:
+   The process of this calculation function is:\
 
    for x in (-0.05, 0.05, 0.01):
 
