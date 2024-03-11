@@ -28,7 +28,7 @@ The function of each py.files are defined as follows:
 
    Your can modify the training parameters in config.py. For example, your can change the vth to modify the target vth velocity in the machine learning process. 
 
-4. inference.py
+3. inference.py
    
    (1). inference_results_mesh().
    
