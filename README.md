@@ -33,15 +33,15 @@ The function of each py.files are defined as follows:
    for x in (-0.05, 0.05, 0.01):\
    for y in (-0.05, 0.05, 0.01):\
    for z in (-0.05, 0.05, 0.01):\
-   vth = model([x, y, z])\
+   vth = model([x, y, z])
    
    (2). inference_results_uniform().
 
    In this function, you can infer the vth by feeding the uniform inputs into the well training model.  The process of this calculation function is:
 
    for x in (-0.05, 0.05, 0.01):\
-        y, z = x\
-        vth = model([x, y, z])
+   y, z = x\
+   vth = model([x, y, z])
    
    Additionally, you can change the strain direction by modifying the input_d vector. For example, input_d = [1, 0, 0] corresponds to strain along the x-direction, [1, 1, 0] corresponds xy direction.
 
