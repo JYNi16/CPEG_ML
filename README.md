@@ -30,10 +30,13 @@ The function of each py.files are defined as follows:
    
    In this function, you can infer the vth by feeding the mesh inputs into the well training model. The process of this calculation function is
    
-      for x in (-0.05, 0.05, 0.01):\
-        for y in (-0.05, 0.05, 0.01):\
-             for z in (-0.05, 0.05, 0.01):\
-                 vth = model([x, y, z])\
+      for x in (-0.05, 0.05, 0.01):
+
+           for y in (-0.05, 0.05, 0.01):
+
+                for z in (-0.05, 0.05, 0.01):
+
+                     vth = model([x, y, z])
    
    (2). inference_results_uniform().
    In this function, you can infer the vth by feeding the uniform inputs into the well training model. 
