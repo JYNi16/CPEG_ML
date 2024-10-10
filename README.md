@@ -1,4 +1,4 @@
-# CPEG_ML
+# CPEG Machine Learning
 Based on the artifical Neural Network to fit the optical parameters
 
 Before starting this project, you should install following libraries: 
