@@ -1,5 +1,5 @@
 # CPEG Machine Learning
-Based on the artifical Neural Network to fit the optical parameters
+Fitting the CPGE parameters based on the artifical Neural Network
 
 Before starting this project, you should install following libraries: 
 
@@ -10,7 +10,7 @@ You can modify the training details/saving path in config.py.
 
 You can start to train model by following command: python train.py. 
 
-The function of each py.files are defined as follows: 
+The function of each xx_py.files are defined as follows: 
 
 1. config.py
    
